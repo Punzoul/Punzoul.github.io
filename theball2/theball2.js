@@ -1,107 +1,94 @@
-//ball catch 
+// ball catch 
 
 var ballx = 300;
 var bally = 300;
 var ballSize = 40;
 var score = 0;
 var gameState = "L1";
-var img, img2, img3;
+var img, img2;
+var cursorImg;
 
-function preload() {
-// preload() runs once, it may make you wait
-//  img = loadImage('backgroundg.jpg');  // cat.jpg needs to be next to this .js file
-// you can link to an image on your github account
+function preload() { 
   img = loadImage('https://Punzoul.github.io/images/backgroundg.jpg');
-  img2 = loadImage('http://Punzoul.github.io/images/starg.jpg');
-  img3 = loadImage('http://Punzoul.github.io/images/firstocg.jpg');
+  img2 = loadImage('https://Punzoul.github.io/images/starg.png');
+  cursorImg = loadImage('https://Punzoul.github.io/images/firstocg.png');
 }
 
 function setup() {
   createCanvas(600,600);
+  noCursor();
   textAlign(CENTER);
   textSize(20);
-}//end of setup ===========
+}
 
 function draw(){
   background(img);
-  cursor(img3);
-  if(gameState == "L1"){
-  levelOne();
-  }
-  if(gameState == "L2"){
-  levelTwo();
-  }
-  if(gameState == "L3"){
-    levelThree();
-  }
-  if(gameState == "win"){
-    winGame();
-  }
 
+  if(gameState == "L1") levelOne();
+  if(gameState == "L2") levelTwo();
+  if(gameState == "L3") levelThree();
+  if(gameState == "win") winGame();
+
+  fill(255);
   text("Score: " + score, width / 2, 40);
-}//end of draw ========
+}
 
+// ---------- LEVEL 1 ----------
 function levelOne(){
+  image(cursorImg, mouseX-30, mouseY-30, 60, 60);
   text("Level 1", width/2, height-20);
-  var distToBall = dist(ballx, bally, mouseX, mouseY);
-  if(distToBall < ballSize/2){
+
+  let d = dist(ballx, bally, mouseX, mouseY);
+  if(d < ballSize/2){
     ballx = random(width);
-    bally= random(height);
-    score= score + 1;
+    bally = random(height);
+    score++;
   }
-  
-  if(score>= 5){
-   gameState = "L2";
-  }
-  
-  line(ballx, bally, mouseX, mouseY);
-  ellipse(ballx, bally, ballSize, ballSize);
 
-  
-}//end of level 1========
+  if(score >= 5) gameState = "L2";
 
+  image(img2, ballx-ballSize/2, bally-ballSize/2, ballSize, ballSize);
+}
+
+// ---------- LEVEL 2 ----------
 function levelTwo(){
-  background(img);
+  image(cursorImg, mouseX-30, mouseY-30, 60, 60);
   text("Level 2", width/2, height-20);
-  var distToBall = dist(ballx, bally, mouseX, mouseY);
-  if (distToBall <ballSize/2){
+
+  let d = dist(ballx, bally, mouseX, mouseY);
+  if(d < ballSize/2){
     ballx = random(width);
-    bally= random(height);
-    score= score + 1;
+    bally = random(height);
+    score++;
   }
-  
-  if(score >10){
-   gameState = "L3";
-  }
-  //line(ballx, bally, mouseX, mouseY);
-  ellipse(ballx, bally, ballSize, ballSize);
 
-}//end of level 2========
+  if(score > 10) gameState = "L3";
 
+  image(img2, ballx-ballSize/2, bally-ballSize/2, ballSize, ballSize);
+}
+
+// ---------- LEVEL 3 ----------
 function levelThree(){
-  background(img);
-  text("Level 2", width/2, height-20);
-  var distToBall = dist(ballx, bally, mouseX, mouseY);
-  if (distToBall <ballSize/2){
+  image(cursorImg, mouseX-30, mouseY-30, 60, 60);
+  text("Level 3", width/2, height-20);
+
+  let d = dist(ballx, bally, mouseX, mouseY);
+  if(d < ballSize/2){
     ballx = random(width);
-    bally= random(height);
-    score= score + 1;
-    ballSize = ballSize -5;
+    bally = random(height);
+    score++;
+    ballSize = max(ballSize - 5, 10);
   }
-  
-  if(score >15){
-    gameState = "win";
-    background(random(255));
-  }
-  //line(ballx, bally, mouseX, mouseY);
-  ellipse(ballx, bally, ballSize, ballSize);
 
-  
-}//end of level 3========
+  if(score > 15) gameState = "win";
 
+  image(img2, ballx-ballSize/2, bally-ballSize/2, ballSize, ballSize);
+}
+
+// ---------- WIN SCREEN ----------
 function winGame(){
-  background(0,100,200);
+  background(img);
+  fill(255,204,0);
   textSize(60); 
-  text("winGame", width/2, height/2);
-  
-}//end of winGame========
+  text("YOU WIN!", width/2, height/2);
+}
